@@ -1,0 +1,102 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-reference-server"
+version = "0.1.0"
+description = "Comprehensive reference implementation of the Model Context Protocol (MCP) specification"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "MCP Reference Implementation", email = "reference@mcp.local"}
+]
+keywords = ["mcp", "model-context-protocol", "reference", "specification"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "chuk-mcp-server",
+    "httpx>=0.28.1",
+    "pydantic>=2.0.0",
+    "pytest>=9.0.1",
+    "typing-extensions>=4.0.0",
+    # Note: Install chuk-mcp-server separately or via requirements.txt
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "mypy>=1.0.0",
+    "ruff>=0.1.0",
+    "black>=23.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/mcp-reference-server"
+Documentation = "https://modelcontextprotocol.io"
+Repository = "https://github.com/your-org/mcp-reference-server"
+Specification = "https://modelcontextprotocol.io/specification/"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_reference"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+addopts = "-v --strict-markers"
+markers = [
+    "integration: integration tests",
+    "unit: unit tests",
+]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+strict = true
+files = ["src", "tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = []
+
+[tool.ruff.per-file-ignores]
+"tests/*" = ["S101"]  # Allow assert in tests
+
+[tool.black]
+line-length = 120
+target-version = ['py310', 'py311', 'py312']
+include = '\.pyi?$'
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.uv.sources]
+chuk-mcp-server = { path = "../chuk-mcp-server", editable = true }

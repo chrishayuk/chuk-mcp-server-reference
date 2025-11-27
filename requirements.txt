@@ -1,0 +1,10 @@
+# MCP Reference Server Dependencies
+
+# Core dependency - provides all MCP protocol implementation
+# Use local development version
+-e ../chuk-mcp-server
+
+# Development dependencies
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.0.0
